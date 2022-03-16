@@ -1,16 +1,36 @@
 <template>
+  <Suspense>
+    <template #default>
+      <AsyncShow />
+    </template>
+    <template #fallback>
+      <h1>Loading...</h1>
+    </template>
+  </Suspense>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <HelloWorld :msg="msg"/>
+  <Modal />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref , provide} from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
+import AsyncShow from './components/AsyncShow.vue';
+import Modal from './components/Modal.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    Modal,
+    AsyncShow
+  },
+  setup() {
+    const msg = ref(['北京', '上海', '深圳'])
+    provide('msg', msg)
+    return {
+      msg
+    }
   }
 });
 </script>

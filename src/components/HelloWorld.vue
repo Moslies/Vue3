@@ -1,43 +1,95 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
+    <h1>
+      当前城市: {{ city }}
+      温度: {{ cotyte ? cotyte : 0 }}℃
+      时间: {{ nowTime }}
+    </h1>
     <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
+      <li v-for="(item, index) in msg" :key="index" @click="seletCity(index, msg)">{{ item }}</li>
     </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  
+    <div>
+      <button @click="changeImg">选择</button>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { nowTime, getNowTime } from "../hooks/useNowTime";
+import useUrlAxios  from "../hooks/useUrlAxios";
+
+import { defineComponent,
+         ref,
+         reactive, 
+         toRefs, 
+         inject, 
+         onBeforeMount,
+         onMounted,
+         onBeforeUpdate,
+         onUpdated,
+         onRenderTracked,
+         onRenderTriggered,
+         watch
+        } from 'vue';
 
 export default defineComponent({
   name: 'HelloWorld',
   props: {
-    msg: String,
+    // msg: [],
   },
+  setup() {
+    let title = ref("当前城市");
+    const msg = inject('msg')
+    const data = reactive({
+      city: '',
+      temperature: ['25', '26', '29'],
+      cotyte: '',
+      seletCity: (index: number, msg: string[]) => {
+        data.city = msg[index]
+        data.cotyte = data.temperature[index]
+        title.value = title.value + data.city +'切换完成'
+        document.title =  title.value
+      },
+    })
+
+    watch([title, () => data.city], (newValue, oldValue) => {
+      // console.log(`new--->${newValue}`);
+      // console.log(`old--->${oldValue}`);
+      // document.title = newValue[1];
+    });
+    /* onBeforeMount(() => {
+      console.log("2-组件挂载到页面之前执行-----onBeforeMount()");
+    });
+
+    onMounted(() => {
+      console.log("3-组件挂载到页面之后执行-----onMounted()");
+    });
+    onBeforeUpdate(() => {
+      console.log("4-组件数据更新之前-----onBeforeUpdate()");
+    });
+
+    onUpdated(() => {
+      console.log("5-组件数据更新之后-----onUpdated()");
+    }); */
+   /*  onRenderTracked((event) => {
+      console.log("状态跟踪组件----------->");
+      console.log(event);
+    }); */
+    /* onRenderTriggered((event) => {
+      console.log("状态触发组件--------------->");
+      console.log(event);
+    }); */
+    const refData = toRefs(data);
+
+    return{
+      msg,
+      title,
+      ...refData,
+      nowTime,
+      getNowTime,
+    }
+  }
 });
 </script>
 
