@@ -1,21 +1,15 @@
 <template>
-  <Suspense>
-    <template #default>
-      <AsyncShow />
-    </template>
-    <template #fallback>
-      <h1>Loading...</h1>
-    </template>
-  </Suspense>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld :msg="msg"/>
+  <div id="app">
+    <AsyncShow />
+    <HelloWorld :msg="msg"/>
   <Modal />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref , provide} from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
-import AsyncShow from './components/AsyncShow.vue';
+import AsyncShow from './components/asyncShow/index.vue';
 import Modal from './components/Modal.vue';
 
 export default defineComponent({
@@ -42,6 +36,5 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
