@@ -32,3 +32,8 @@ export default defineComponent({
     },
 })
 </script>
+<style lang="scss">
+img {
+    filter: blur(3px) brightness(100%) grayscale(40%) hue-rotate(188deg) opacity(84%) saturate(300%);
+}
+</style>

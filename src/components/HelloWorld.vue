@@ -8,10 +8,6 @@
     <ul>
       <li v-for="(item, index) in msg" :key="index" @click="seletCity(index, msg)">{{ item }}</li>
     </ul>
-  
-    <div>
-      <button @click="changeImg">选择</button>
-    </div>
   </div>
 </template>
 
@@ -95,6 +91,10 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hello {
+  display: flex;
+  flex-direction: column;
+}
 h3 {
   margin: 40px 0 0;
 }
